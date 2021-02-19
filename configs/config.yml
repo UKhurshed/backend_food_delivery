@@ -1,0 +1,7 @@
+port: "8082"
+
+db:
+  username: "postgres"
+  port: "5436"
+  host: "localhost"
+  dbname: "delivery_test"

@@ -1,12 +1,19 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"backend_food_delivery/pkg/service"
+	"github.com/gin-gonic/gin"
+)
 
 type Handler struct {
-
+	services *service.Service
 }
 
-func (h * Handler) InitRoutes() *gin.Engine {
+func NewHandler(services *service.Service) *Handler {
+	return &Handler{services: services}
+}
+
+func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
 	auth := router.Group("/auth")

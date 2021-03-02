@@ -1,4 +1,4 @@
-package mongodb
+package repository
 
 import (
 	"context"
@@ -7,27 +7,23 @@ import (
 	"time"
 )
 
-const timeOut = 10 * time.Second
+const timeout = 10 * time.Second
 
-func NewClient(uri, username, password string) (*mongo.Client, error){
+func NewClient(uri string) (*mongo.Client, error) {
 	opts := options.Client().ApplyURI(uri)
-	if username != "" && password != "" {
-		opts.SetAuth(options.Credential{
-			Username: username,
-			Password: password,
-		})
-	}
 
 	client, err := mongo.NewClient(opts)
+
 	if err != nil {
 		return nil, err
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), timeOut)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+
 	defer cancel()
 
 	err = client.Connect(ctx)
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 
@@ -35,6 +31,5 @@ func NewClient(uri, username, password string) (*mongo.Client, error){
 	if err != nil {
 		return nil, err
 	}
-
 	return client, nil
 }

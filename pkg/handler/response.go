@@ -5,6 +5,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type DataResponse struct {
+	Data interface{} `json:"data"`
+}
+
 type errorResponse struct {
 	Message string `json:"message"`
 }

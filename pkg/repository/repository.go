@@ -10,12 +10,26 @@ type Authorization interface {
 	CreateUser(ctx context.Context, user domain.User) error
 	GetUser(ctx context.Context, email, password string) (domain.User, error)
 }
-type Repository struct {
-	Authorization
+type TodoList interface {
+	Create(ctx context.Context, list domain.Todo) error
+	GetAll(ctx context.Context) ([]domain.Todo, error)
 }
 
-func NewRepository (db *mongo.Database) *Repository{
+type Category interface {
+	CreateCategory(ctx context.Context, ctg domain.Category) error
+	GetAllCategory(ctx context.Context) ([]domain.Category, error)
+}
+
+type Repository struct {
+	Authorization
+	TodoList
+	Category
+}
+
+func NewRepository(db *mongo.Database) *Repository {
 	return &Repository{
 		Authorization: NewAuthMongo(db),
+		TodoList:      NewTodoListMongo(db),
+		Category: NewCategoryMongo(db),
 	}
 }

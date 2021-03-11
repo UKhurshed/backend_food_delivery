@@ -4,6 +4,7 @@ import (
 	"backend_food_delivery/pkg/domain"
 	"backend_food_delivery/pkg/repository"
 	"context"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Authorization interface {
@@ -20,6 +21,8 @@ type TodoList interface {
 type Category interface {
 	CreateCategory(ctx context.Context, category domain.Category) error
 	GetAllCategory(ctx context.Context) ([]domain.Category, error)
+	DeleteCategory(ctx context.Context, id primitive.ObjectID) error
+	UpdateCategory(ctx context.Context, inp domain.Category) error
 }
 
 type Service struct {

@@ -3,6 +3,7 @@ package repository
 import (
 	"backend_food_delivery/pkg/domain"
 	"context"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -18,6 +19,8 @@ type TodoList interface {
 type Category interface {
 	CreateCategory(ctx context.Context, ctg domain.Category) error
 	GetAllCategory(ctx context.Context) ([]domain.Category, error)
+	DeleteCategory(ctx context.Context, id primitive.ObjectID) error
+	UpdateCategory(ctx context.Context, inp domain.Category) error
 }
 
 type Repository struct {

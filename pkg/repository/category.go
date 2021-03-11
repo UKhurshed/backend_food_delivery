@@ -4,6 +4,7 @@ import (
 	"backend_food_delivery/pkg/domain"
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 )
@@ -48,4 +49,25 @@ func (r *CategoryMongo) GetAllCategory(ctx context.Context) ([]domain.Category, 
 		log.Fatal(err)
 	}
 	return categoryList, nil
+}
+
+func (r *CategoryMongo) DeleteCategory(ctx context.Context, id primitive.ObjectID) error {
+	_, err := r.db.DeleteOne(ctx, bson.M{"_id": id})
+	return err
+}
+
+func (r *CategoryMongo) UpdateCategory(ctx context.Context, inp domain.Category) error {
+	updateQuery := bson.M{}
+
+	if inp.Name != "" {
+		updateQuery["name"] = inp.Name
+	}
+
+	if inp.Image != "" {
+		updateQuery["image"] = inp.Image
+	}
+
+	_, err := r.db.UpdateOne(ctx, bson.M{"_id": inp.ID}, bson.M{"$set": updateQuery})
+	return err
+
 }
